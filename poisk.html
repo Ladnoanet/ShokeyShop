@@ -1,0 +1,251 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShokeyStore</title>
+    <style>
+                html, body {
+            background-position: center center;
+            background-size: cover;
+            background-repeat: no-repeat;
+            margin: 0;
+            padding: 0;
+            height: 100%;
+        }
+
+        header {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+            z-index: 1000;
+            width: 100%;
+            position: fixed;
+        }
+
+        .programms {
+            position: absolute;
+            bottom: 0;
+            height: 60%;
+            width: 100%;
+            background-color: rgba(0, 0, 0, 0.699);
+            border-radius: 25px 25px 0 0;
+            overflow-y: auto;
+        }
+
+        .programms h2 {
+            margin-left: 10px;
+        }
+
+        main img {
+            width: 90%;
+            border-radius: 20px;
+        }
+
+        main a {
+            text-decoration: none;
+            color: white;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            width: 45%;
+            height: 40px;
+            background-color: #69eb60;
+            border-radius: 20px;
+            margin-top: -24.2px;
+            margin-bottom: 10px;
+            position: relative;
+            top: -19px;
+            font-weight: bold;
+            margin-left: -45%;
+        }
+
+        main a img {
+            margin-left: 10px;
+            width: 24px;
+        }
+
+        body {
+    background-color: #232121;
+    font-family: 'Trebuchet MS', 'Lucida Sans Unicode', 'Lucida Grande', 'Lucida Sans', Arial, sans-serif;
+    color: white;
+}
+
+.poisk {
+    width: 100%;
+    height: auto;
+    text-align: right;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+p {
+    margin-left: 10px;
+}
+
+header {
+    background-color: #000000;
+    margin: 0;
+    padding: 0;
+    border-bottom-left-radius: 10px;
+    border-bottom-right-radius: 10px;
+}
+
+header .poisk .poiskr{
+    text-align: left;
+    color: #555;
+    width: 100%;
+    margin-left: 10px;
+    background-color: #000000;
+    border-radius: 20px;
+    margin-right: 5px;
+    padding: 5px;
+    border: 2px solid white;
+    text-decoration: none;
+}
+
+.poisk img {
+    width: 35px;
+    border-radius: 50%;
+    transition: transform 0.3s;
+    margin-top: 5px;
+}
+
+.poisk img:hover {
+    transform: scale(1.2);
+    border-radius: 50%;
+}
+
+.news {
+    width: 100%;
+    text-align: center;
+}
+
+.news img {
+    width: 100%;
+    border-radius: 15px;
+}
+
+.programms img {
+    width: 100%;
+    border-radius: 15px;
+}
+
+.scroll-container {
+    display: flex;
+    overflow-x: auto;
+    gap: 10px;
+    padding: 10px;
+}
+
+.scroll-container::-webkit-scrollbar {
+    height: 10px;
+}
+
+.scroll-container::-webkit-scrollbar-thumb {
+    background-color: #555;
+    border-radius: 10px;
+}
+
+.filter-btn {
+    padding: 0.5rem 1rem;
+    border: 1px solid #f19317;
+    background: #f19317;
+    color: white;
+    cursor: pointer;
+    transition: background 0.3s, transform 0.3s;
+    font-size: 15px;
+    border-radius: 10px;
+}
+
+.filter-btn:hover {
+    transform: scale(1.1);
+    background: #f19317;
+    color: #000000;
+}
+
+.app-item {
+    background-color: none;
+}
+
+.menu {
+    background-color: rgb(39, 39, 39);
+    width: 100%;
+    height: 50px;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+    </style>
+</head>
+<body>
+    <header>
+        <div class="poisk">
+            <input id="searchInput" class="poiskr" placeholder="Поиск...">
+            <a href="account.html"><img src="Аккаунт.png" alt="Аккаунт"></a>
+            <a href="store.html"><img src="главная.png" alt="главная"></a>
+            <a href="downloaded.html"><img src="скачано.png" alt="скачано"></a>
+        </div>  
+    </header>
+<br><br><br>
+<main>
+    <center>
+        <div class="app-item" name="Test">
+            <img src="Test.png" alt="">
+            <a href="test.html">Скачать <img src="скачать.png" alt="Иконка загрузки"></a>
+        </div> 
+    </center>
+</main>
+
+<script>
+    function checkWindowSize() {
+        if (window.innerWidth > 320) {
+            window.location.href = "error.html";
+        }
+    }
+
+    checkWindowSize();
+
+    window.addEventListener('resize', checkWindowSize);
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const appItems = document.querySelectorAll('.app-item');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const filter = button.getAttribute('data-filter');
+
+                appItems.forEach(item => {
+                    if (filter === 'all' || item.getAttribute('data-category') === filter) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+        
+        const searchInput = document.getElementById('searchInput');
+
+        searchInput.addEventListener('input', () => {
+            const query = searchInput.value.toLowerCase();
+
+            appItems.forEach(item => {
+                const itemName = item.getAttribute('name').toLowerCase();
+
+                if (itemName.includes(query)) {
+                    item.style.display = 'block';
+                } else {
+                    item.style.display = 'none';
+                }
+            });
+        });
+    });
+</script>
+</body>
+</html>

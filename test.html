@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShokeyStore</title>
+    <link rel="stylesheet" href="app.css">
+</head>
+<body>
+    <header>
+        <div class="poisk">
+            <a class="poiskr" href="poisk.html">Поиск...</a>
+            <a href="account.html"><img src="Аккаунт.png" alt="Аккаунт"></a>
+            <a href="store.html"><img src="главная.png" alt="главная"></a>
+            <a href="downloaded.html"><img src="скачано.png" alt="скачано"></a>
+        </div>  
+    </header>
+    <main>
+        <center>
+            <div class="app-item" name="Test" id="appTest">
+                <img style="margin-top: -30px;" src="test-preview.png" alt="">
+                <a href="test-app.zip" id="downloadLink">Скачать <img src="скачать.png" alt="Иконка загрузки"></a>
+            </div>
+        </center>
+        <div class="info">
+            <p>Тип приложения:</p><img src="for developers.png" alt="">
+        </div>
+        <div class="news">
+            <div class="scroll-container">
+                <img src="Test.png" alt="тест">
+                <img src="Test.png" alt="тест">
+            </div>
+        </div>
+        <h2 style="margin-left: 10px;">Отзывы:</h2>
+        
+        <center>
+            <button id="reviewButton">Написать отзыв!</button>
+            <div class="otziv-container" id="otzivContainer">
+            </div>
+            <div class="otziv">
+                <div class="otziv-header">
+                    <p><strong>Shokey</strong></p>
+                    <p>4★</p>
+                </div>
+                <p>Проверено администрацией!</p>
+            </div>
+            <br>
+        </center>
+        <div class="programms" id="reviewForm"> 
+            <center>
+                <h2>Оставить отзыв:</h2>
+                <textarea id="reviewText" placeholder="Напишите ваш отзыв здесь..."></textarea>
+                <h2>Кол-во звезд 1-5:</h2>
+                <input type="number" id="reviewStars" placeholder="Кол-во звезд..." min="1" max="5">
+                <br><br>
+                <button id="submitButton">Отправить!</button>
+            </center>
+        </div>
+    </main>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            const reviewButton = document.getElementById('reviewButton');
+            const reviewForm = document.getElementById('reviewForm');
+            const submitButton = document.getElementById('submitButton');
+            const otzivContainer = document.getElementById('otzivContainer');
+            const appId = document.querySelector('.app-item').id;
+            const downloadLink = document.getElementById('downloadLink');
+
+            reviewButton.addEventListener('click', function() {
+                if (localStorage.getItem('accountExists') === 'true') {
+                    reviewForm.style.display = 'block';
+                    setTimeout(() => {
+                        reviewForm.style.transform = 'translateY(0)';
+                    }, 10);
+                } else {
+                    window.location.href = 'login.html';
+                }
+            });
+
+            submitButton.addEventListener('click', function() {
+                const reviewText = document.getElementById('reviewText').value.trim();
+                const reviewStars = document.getElementById('reviewStars').value.trim();
+                const username = localStorage.getItem('shokeyUsername') || 'Аноним';
+
+                if (reviewText && reviewStars && reviewStars >= 1 && reviewStars <= 5) {
+                    addReview(username, reviewText, reviewStars);
+                    saveReview(username, reviewText, reviewStars);
+
+                    reviewForm.style.transform = 'translateY(100%)';
+                    setTimeout(() => {
+                        reviewForm.style.display = 'none';
+                    }, 500);
+
+                    document.getElementById('reviewText').value = '';
+                    document.getElementById('reviewStars').value = '';
+                } else {
+                    alert('Пожалуйста, заполните все поля и укажите количество звезд от 1 до 5.');
+                }
+            });
+
+            function addReview(username, text, stars) {
+                const reviewDiv = document.createElement('div');
+                reviewDiv.classList.add('otziv');
+                
+                const reviewHeader = document.createElement('div');
+                reviewHeader.classList.add('otziv-header');
+
+                const userNameP = document.createElement('p');
+                userNameP.innerHTML = `<strong>${username}</strong>`;
+                
+                const starsP = document.createElement('p');
+                starsP.textContent = `${stars}★`;
+
+                reviewHeader.appendChild(userNameP);
+                reviewHeader.appendChild(starsP);
+                reviewDiv.appendChild(reviewHeader);
+
+                const reviewTextP = document.createElement('p');
+                reviewTextP.textContent = text;
+                reviewDiv.appendChild(reviewTextP);
+
+                otzivContainer.appendChild(reviewDiv);
+            }
+
+            function saveReview(username, text, stars) {
+                const reviews = JSON.parse(localStorage.getItem('reviews')) || {};
+                if (!reviews[appId]) {
+                    reviews[appId] = [];
+                }
+                reviews[appId].push({ username, reviewText: text, reviewStars: stars });
+                localStorage.setItem('reviews', JSON.stringify(reviews));
+            }
+
+            function loadReviews() {
+                const storedReviews = JSON.parse(localStorage.getItem('reviews')) || {};
+                const appReviews = storedReviews[appId] || [];
+                appReviews.forEach(review => {
+                    addReview(review.username, review.reviewText, review.reviewStars);
+                });
+            }
+
+            loadReviews();
+
+            downloadLink.addEventListener('click', function() {
+                let installedApps = JSON.parse(localStorage.getItem('installedApps')) || [];
+                if (!installedApps.includes(appId)) {
+                    installedApps.push(appId);
+                    localStorage.setItem('installedApps', JSON.stringify(installedApps));
+                }
+            });
+
+            function checkWindowSize() {
+                if (window.innerWidth > 320) {
+                    window.location.href = "error.html";
+                }
+            }
+
+            checkWindowSize();
+
+            window.addEventListener('resize', checkWindowSize);
+        });
+    </script>
+</body>
+</html>

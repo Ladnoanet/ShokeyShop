@@ -1,0 +1,128 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ShokeyStore</title>
+    <link rel="stylesheet" href="store.css">
+    <style>
+        html, body {
+    background-image: url('background.jpeg');
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+}
+
+
+        header {
+            margin: 0;
+            padding: 0;
+            background-color: #000000;
+        }
+
+        .programms {
+    position: absolute;
+    bottom: 0;
+    height: 70%;
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.699);
+    border-radius: 25px 25px 0 0;
+    overflow-y: auto;
+}
+
+.programms h2 {
+    margin-left: 10px;
+}
+
+.programms img {
+    width: 90%;
+}
+
+    </style>
+</head>
+<body>
+<header>
+    <div class="poisk">
+        <a class="poiskr" href="poisk.html">Поиск...</a>
+        <a href="account.html"><img src="Аккаунт.png" alt="Аккаунт"></a>
+        <a href="store.html"><img src="главная.png" alt="главная"></a>
+        <a href="downloaded.html"><img src="скачано.png" alt="скачано"></a>
+    </div>  
+</header>
+
+
+<div class="news">
+    <p style="text-align: left;">Требуют обновления:</p>
+    <center><p>Тут ничего нет</p></center>
+    <div class="scroll-container">
+        
+    </div>
+</div>
+<br>
+<div class="programms">
+    <p>Установлено:</p>
+    <center>
+        <a href="test.html" class="app-item" data-app="appTest"><img src="test.png" alt="App Test"></a>
+    </center>
+</div>
+
+
+    <!-- Спасите меня -->
+
+
+
+<script>
+    function checkWindowSize() {
+        if (window.innerWidth > 320) {
+            window.location.href = "error.html";
+        }
+    }
+
+    checkWindowSize();
+
+    window.addEventListener('resize', checkWindowSize);
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const filterButtons = document.querySelectorAll('.filter-btn');
+        const appItems = document.querySelectorAll('.app-item');
+
+        filterButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                const filter = button.getAttribute('data-filter');
+
+                appItems.forEach(item => {
+                    if (filter === 'all' || item.getAttribute('data-category') === filter) {
+                        item.style.display = 'block';
+                    } else {
+                        item.style.display = 'none';
+                    }
+                });
+            });
+        });
+    });
+
+    document.addEventListener('DOMContentLoaded', () => {
+    // Функция для отображения установленных приложений
+    function displayInstalledApps() {
+        const installedApps = JSON.parse(localStorage.getItem('installedApps')) || [];
+        const appItems = document.querySelectorAll('.app-item');
+
+        appItems.forEach(item => {
+            const appId = item.getAttribute('data-app');
+            if (installedApps.includes(appId)) {
+                item.style.display = 'block';
+            } else {
+                item.style.display = 'none';
+            }
+        });
+    }
+
+    displayInstalledApps();
+});
+
+</script>
+</body>
+</html>

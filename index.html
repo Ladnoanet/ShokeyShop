@@ -4,111 +4,28 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ShokeyStore</title>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:ital,wght@0,300;1,300&display=swap" rel="stylesheet">
-    <style>
-        html, body {
-            margin: 0;
-            padding: 0;
-            height: 100%;
-            width: 100%;
-            color: white;
-            overflow-x: hidden;
-        }
-
-        body {
-            background-color: #282c34;
-            font-family: 'Roboto', sans-serif;
-            position: relative;
-        }
-
-        body::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background-image: url('background.jpeg');
-            background-position: center top;
-            background-size: cover;
-            opacity: 0;
-            animation: fade-in 2s forwards 0s; /* Анимация начнется через 2 секунды */
-        }
-
-        @keyframes fade-in {
-            to {
-                opacity: 1;
-            }
-        }
-
-        .programms {
-            position: fixed;
-            bottom: 0;
-            top: 50px;
-            width: 100%;
-            background-color: rgba(0, 0, 0, 0.699);
-            border-radius: 25px 25px 0 0;
-            overflow-y: auto;
-            transform: translateY(100%);
-            animation: slide-up 1s forwards 1s;
-        }
-
-        @keyframes slide-up {
-            from {
-                transform: translateY(100%);
-            }
-            to {
-                transform: translateY(0);
-            }
-        }
-
-        h1 {
-            margin-left: 10px;
-        }
-
-        .scroll-container {
-            display: flex;
-            overflow-x: auto;
-            gap: 10px;
-            padding: 10px;
-        }
-
-        .scroll-container::-webkit-scrollbar {
-            height: 10px;
-        }
-
-        .scroll-container::-webkit-scrollbar-thumb {
-            background-color: #555;
-            border-radius: 10px;
-        }
-
-        .programm {
-            flex: 0 0 auto;
-            width: 220px;
-            border-radius: 20px;
-        }
-
-        .popular {
-            width: 80%;
-        }
-    </style>
+    <link rel="stylesheet" href="index.css">
 </head>
 <body>
-    <div class="programms">
-        <h1>Популярно:</h1>
-        <center>
-            <img class="popular" src="планеты.png" alt="">
-        </center>
-        <h1>Игры:</h1>
-        <center><h3>Тут пока ничего нет</h3></center>
-        <h1>Программы:</h1>
-        <div class="scroll-container">
-            <img class="programm" src="PLANETS.png" alt="">
-            <img class="programm" src="ТЕКСТ (1).png" alt="">
-        </div>
-        <h1>Соц сети:</h1>
-        <center><h3>Тут пока ничего нет</h3></center>
-        <br><br>
+    <h1>Добро пожаловать в ShokeyStore!</h1>
+    <div class="container">
+        <img src="фото начало.png" alt="начальное фото">
     </div>
+    <br><br><br>
+    <div class="button">
+        <a href="store.html">Вперед!</a>
+    </div>
+
+    <script>
+        function checkWindowSize() {
+            if (window.innerWidth > 320) {
+                window.location.href = "error.html";
+            }
+        }
+
+        checkWindowSize();
+
+        window.addEventListener('resize', checkWindowSize);
+    </script>
 </body>
 </html>
